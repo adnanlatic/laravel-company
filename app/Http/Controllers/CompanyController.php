@@ -8,6 +8,7 @@ use App\Http\Requests\CompanyRequest;
 use Illuminate\Support\Facades\Input;
 use \Image;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -42,6 +43,10 @@ class CompanyController extends Controller
      */
     public function store(CompanyRequest $request)
     {
+      //creates directory /app/public/ if doesn't exist
+      if(!Storage::exists('/app/public')) {
+        Storage::makeDirectory('/public', 0775, true); //creates directory
+      }
         // storing new company to database
         $company = new Company();
         $company->name = $request->name;
@@ -103,6 +108,10 @@ class CompanyController extends Controller
      */
     public function update(CompanyRequest $request, Company $company)
     {
+      //creates directory /app/public/ if doesn't exist
+      if(!Storage::exists('/app/public')) {
+        Storage::makeDirectory('/public', 0775, true);
+      }
         // updating edited company
         $companyEdit = Company::find($company->id);
         $input = $request->all();
